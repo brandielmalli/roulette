@@ -3,8 +3,11 @@ body{
   word-wrap:break-word;
   background-color: darkslategray;
   text-align: center;
+<<<<<<< HEAD
   font-family: 'Oswald', sans-serif;
   font-size: 18px;
+=======
+>>>>>>> 82a7eb86e710f7a21b45b7597e42952f12d606c1
 }
 img{
   height: 600px;

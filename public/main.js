@@ -40,6 +40,7 @@ function checkWhoWon(choice,playerBets){
         decreasePlayerMoney();
     }
 }
+<<<<<<< HEAD
 function decreasePlayerMoney(){
   let bet = parseFloat(document.getElementById('bet').value)
     displayCompleteMessage("You Lose !");
@@ -78,4 +79,54 @@ function increasePlayerMoney(){
     console.log(data)
     window.location.reload(true)
   })
+=======
+const playerWin = () =>{
+    let bet = parseFloat(document.getElementById('bet').value)
+    let user = document.getElementById('name').value
+    fetch('users', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            'user': user,
+            'bet': bet
+        })
+    })
+    .then(response => {
+        if (response.ok) return response.json()
+    })
+    .then(data => {
+        console.log(data)
+        window.location.reload(true)
+    })
+}
+const playerLose = () =>{
+    let bet = parseFloat(document.getElementById('bet').value)
+    let user = document.getElementById('name').value
+    fetch('users', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            'user': user,
+            'bet': bet
+        })
+    })
+    .then(response => {
+        if (response.ok) return response.json()
+    })
+    .then(data => {
+        console.log(data)
+        window.location.reload(true)
+    })
+}
+function decreasePlayerMoney(){
+    displayCompleteMessage("You Lose !");
+    var timeoutId = setTimeout(playerLose,5000)
+}
+function increasePlayerMoney(){
+    displayCompleteMessage("You Win !");
+    var timeoutId = setTimeout(playerWin,5000)
+}
+function displayCompleteMessage(msg){
+    document.getElementById("msg").innerHTML=msg;
+>>>>>>> 82a7eb86e710f7a21b45b7597e42952f12d606c1
 }
