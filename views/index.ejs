@@ -1,25 +1,39 @@
 <!doctype html>
 <html>
 <head>
-    <title>21 Savage Fan Site</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <title>casino</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
 </head>
 <body>
-<div class="container">
+  <a href="/login" class="btn btn-default"><span class="fa fa-user"></span>Login</a>
 
-    <div class="jumbotron text-center">
-        <h1>21 Savage Fan Site</h1>
-        <img src="img/savage21.jpg" alt="21 Savage Profile Photo">
+        <h1>Lets play Roulette!</h1>
 
-        <p>Login or Signup:</p>
 
-        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span>Login</a>
-        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span>Signup</a>
+        <form action="/" method="POST">
+        <input type="text" placeholder="Name" name="gambler">
+        <br><input type="text" placeholder="Amount Won" name="total" readonly >
+      </form>
 
-    </div>
+        <img src="img/roulette.png" alt="roulette table">
 
-</div>
+
+        <form>
+          <button type="submit" id="black">Bet on black</button>
+          <input id="bet"type="text" placeholder="Bet $$" name="bet">
+          <button type="submit" id="red">Bet on red</button>
+          <button id="green">Bet on green</button>
+          <!-- <button type="submit">high</button>
+          <button type="submit">low</button>
+          <button type="submit">red high</button>
+          <button type="submit">red low</button>
+          <button type="submit">black high</button>
+          <button type="submit">black low</button> -->
+          <button type="submit">Bet on green</button>
+        </form>
+
+
+
 </body>
 </html>
