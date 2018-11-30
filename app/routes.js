@@ -3,9 +3,21 @@ module.exports = function(app, passport, db) {
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
-    app.get('/', function(req, res) {
-        res.render('index.ejs');
-    });
+    // app.get('/index', function(req, res) {
+    //   db.collection('users').find().toArray((err, result) => {
+    //       if (err) return console.log(err)
+    //       console.log(req.user)
+    //       console.log(result)
+    //       res.render('index.ejs', {
+    //         user : req.user,
+    //         messages: result
+    //       })
+    //     })
+    // });
+
+    app.get('/', function(req, res){
+      res.render('index.ejs');
+    })
 
     // PROFILE SECTION ========================= function..will only goes thru if prof is logged in
     app.get('/profile', isLoggedIn, function(req, res) {
@@ -18,6 +30,15 @@ module.exports = function(app, passport, db) {
         })
     });
 
+    app.get('/score', (req, res) => {
+      db.collection('users').find().toArray((err, results) => {
+        if(err) return console.log(err);
+        res.render('score.ejs', {
+          score: results
+        });
+      })
+    });
+
     // LOGOUT ============================== ends sec redirects to home page
     app.get('/logout', function(req, res) {
         req.logout();
@@ -28,13 +49,21 @@ module.exports = function(app, passport, db) {
 //req body sending form data body parser (breaks down form)
 //post sending information (info in req parameter)
 //form makes post to server sends database, req pulls data
-    app.post('/messages', (req, res) => {
-      db.collection('messages').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0}, (err, result) => {
-        if (err) return console.log(err)
-        console.log('saved to database')
-        res.redirect('/profile')
-      })
-    })
+    // app.post('/messages', (req, res) => {
+    //   db.collection('messages').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0}, (err, result) => {
+    //     if (err) return console.log(err)
+    //     console.log('saved to database')
+    //     res.redirect('/profile')
+    //   })
+    // })
+
+    // app.post('/user', (req, res) => {
+    //   db.collection('users').save({name: req.body.name, total: req.body.total}, (err, result) => {
+    //     if (err) return console.log(err)
+    //     console.log('saved to database')
+    //     res.redirect('/index')
+    //   })
+    // })
 
 //trigger req.
     app.put('/messages', (req, res) => {
@@ -49,6 +78,24 @@ module.exports = function(app, passport, db) {
       }, (err, result) => {
         if (err) return res.send(err)
         res.send(result)
+      })
+    })
+
+    //============================================
+    //SCORE
+    //============================================
+    app.post('/score', (req,res) => {
+      db.collection('users').save({housewins:req.body.housewin, userwins:req.body.userwin, housecache:req.body.houseCache, usercache:req.body.userCache}, (err, result) => {
+        res.redirect('/score')
+      })
+    })
+
+
+    app.post('/messages', (req, res) => {
+      db.collection('messages').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0}, (err, result) => {
+        if (err) return console.log(err)
+        console.log('saved to database')
+        res.redirect('/profile')
       })
     })
 
@@ -71,10 +118,16 @@ module.exports = function(app, passport, db) {
         });
 
         // process the login form
-        app.post('/login', passport.authenticate('local-login', {
+        app.post('/login', (req, res) ,passport.authenticate('local-login', {
+          if(req.body.person == 'player'){
+            successRedirect : '/index', // redirect to the secure profile section
+            failureRedirect : '/login', // redirect back to the signup page if there is an error
+            failureFlash : true // allow flash messages
+          }else{
             successRedirect : '/profile', // redirect to the secure profile section
             failureRedirect : '/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
+          }
         }));
 
         // SIGNUP =================================
@@ -100,7 +153,7 @@ module.exports = function(app, passport, db) {
     // local --------------------------------- undefined by email,psswrd)(morally ethical way to fully delete an account) ->
    //some sites save info by setting boolean to false but ur subject to hacks n being re-targeted with future ads running against u.
    //fb uses machine algorithms to know everything about you target an push ads ,faragade pocket for privacy, blocking all asignals
-    
+
     app.get('/unlink/local', isLoggedIn, function(req, res) {
         var user            = req.user;
         user.local.email    = undefined;
